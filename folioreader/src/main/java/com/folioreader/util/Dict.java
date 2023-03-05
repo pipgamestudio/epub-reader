@@ -127,6 +127,16 @@ public class Dict {
                         }
                     } else if (s.endsWith("ing")) {
                         exp = sdr.lookup(s.substring(0, s.length()-3)).definition;
+                        if (exp.equals("找不到翻譯...") && s.length() > 5) {
+                            String d1 = s.substring(s.length()-4, s.length()-3);
+                            String d2 = s.substring(s.length()-5, s.length()-4);
+                            if (d1.equals(d2)) {
+                                exp = sdr.lookup(s.substring(0, s.length()-4)).definition;
+                            } else {
+                                String d = s.substring(0, s.length()-3) + "e";
+                                exp = sdr.lookup(d).definition;
+                            }
+                        }
                     }
                 } catch (NotFoundWordException e) {}
             }

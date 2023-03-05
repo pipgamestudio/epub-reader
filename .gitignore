@@ -145,3 +145,5 @@ appengine-generated/
 .idea/modules/sample/FolioReader-Android.sample.unitTest.iml
 .idea/vcs.xml
 .travis.yml
+/build/
+/folioreader/build/
