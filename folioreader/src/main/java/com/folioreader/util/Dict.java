@@ -117,28 +117,73 @@ public class Dict {
 
             // cut the end if 'ing', 'ed' or 's'
             if (exp.equals("找不到翻譯...")) {
-                try {
-                    if (s.endsWith("s")) {
-                        exp = sdr.lookup(s.substring(0, s.length()-1)).definition;
-                    }else if (s.endsWith("ed")) {
-                        exp = sdr.lookup(s.substring(0, s.length()-2)).definition;
-                        if (exp.equals("找不到翻譯...")) {
-                            exp = sdr.lookup(s.substring(0, s.length()-1)).definition;
-                        }
-                    } else if (s.endsWith("ing")) {
-                        exp = sdr.lookup(s.substring(0, s.length()-3)).definition;
-                        if (exp.equals("找不到翻譯...") && s.length() > 5) {
-                            String d1 = s.substring(s.length()-4, s.length()-3);
-                            String d2 = s.substring(s.length()-5, s.length()-4);
-                            if (d1.equals(d2)) {
-                                exp = sdr.lookup(s.substring(0, s.length()-4)).definition;
-                            } else {
-                                String d = s.substring(0, s.length()-3) + "e";
-                                exp = sdr.lookup(d).definition;
+                if (s.endsWith("s")) {
+                    try {
+                        String tempStr = s.substring(0, s.length() - 1);
+                        exp = sdr.lookup(tempStr).definition;
+                    } catch (NotFoundWordException e) {}
+                } else if (s.endsWith("ied")) {
+                    try {
+                        String tempStr = s.substring(0, s.length() - 3);
+                        exp = sdr.lookup(tempStr+"y").definition;
+                    } catch (NotFoundWordException e) {}
+                } else if (s.endsWith("ed")) {
+                    try {
+                        String tempStr = s.substring(0, s.length() - 2);
+                        exp = sdr.lookup(tempStr).definition;
+                    } catch (NotFoundWordException e) {}
+
+                    if (exp.equals("找不到翻譯...")) {
+                        try {
+                            String tempStr = s.substring(0, s.length() - 1);
+                            exp = sdr.lookup(tempStr).definition;
+                        } catch (NotFoundWordException e) {}
+                    }
+                } else if (s.endsWith("ing")) {
+                    try {
+                        String tempStr = s.substring(0, s.length()-3);
+                        exp = sdr.lookup(tempStr).definition;
+                    } catch (NotFoundWordException e) {}
+
+                    if (exp.equals("找不到翻譯...") && s.length() > 5) {
+                        String d1 = s.substring(s.length()-4, s.length()-3);
+                        String d2 = s.substring(s.length()-5, s.length()-4);
+                        if (d1.equals(d2)) {
+                            String tempStr = s.substring(0, s.length()-4);
+                            try {
+                                exp = sdr.lookup(tempStr).definition;
+                            } catch (NotFoundWordException e) {}
+                            if (exp.equals("找不到翻譯...")) {
+                                tempStr = s.substring(0, s.length()-3) + "e";
+                                try {
+                                    exp = sdr.lookup(tempStr).definition;
+                                } catch (NotFoundWordException e) {}
                             }
                         }
+                    } else if (s.endsWith("ly")) {
+                        String tempStr = s.substring(0, s.length()-2);
+                        try {
+                            exp = sdr.lookup(tempStr).definition;
+                        } catch (NotFoundWordException e) {}
+                        if (exp.equals("找不到翻譯...")) {
+                            tempStr = s.substring(0, s.length()-2) + "e";
+                            try {
+                                exp = sdr.lookup(tempStr).definition;
+                            } catch (NotFoundWordException e) {}
+                        }
+                    } else if (exp.equals("找不到翻譯...") && s.endsWith("ies")) {
+                        String tempStr = s.substring(0, s.length()-3) + "y";
+                        try {
+                            exp = sdr.lookup(tempStr).definition;
+                        } catch (NotFoundWordException e) {}
+                    } else if (exp.equals("找不到翻譯...") && s.endsWith("est")) {
+                        String tempStr = s.substring(0, s.length()-3);
+                        try {
+                            exp = sdr.lookup(tempStr).definition;
+                        } catch (NotFoundWordException e) {}
                     }
-                } catch (NotFoundWordException e) {}
+                }
+
             }
         }
 
